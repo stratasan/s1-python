@@ -2,7 +2,6 @@ from typing import List, Optional
 from dataclasses import dataclass, field
 
 from .registry import register_record_spec
-from ..parsing import parse_line_with_spec
 
 
 class InvalidFieldLength(ValueError):

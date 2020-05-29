@@ -29,7 +29,7 @@ def test_validate_number_of_fields_repeat_spec_no_actual_repeats(
 
 
 def test_validate_number_of_fields_repeat_spec_some_repeats(
-    repeat_spec: RecordSpec
+    repeat_spec: RecordSpec,
 ) -> None:
     """ The repeat spec is (1) + 3 * 2X """
     repeat_spec.validate_number_of_fields(6)
