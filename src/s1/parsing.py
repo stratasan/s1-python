@@ -9,7 +9,7 @@ def splat(line: str) -> List[str]:
     return line.split(SEP)
 
 
-def parse_line_with_spec(line: str, spec: "BaseRecordSpec") -> dict:
+def parse_line_with_spec(line: str, spec: "RecordSpec") -> dict:
     """ Convert a pipe-separated line into a dictionary
 
     The basic idea of the S1 format is that it contains pipe-separated lines containing
