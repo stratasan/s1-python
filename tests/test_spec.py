@@ -15,14 +15,14 @@ def test_validate_number_of_fields_short(basic_spec: RecordSpec) -> None:
 
 
 def test_validate_number_of_fields_long_no_repeat(
-    basic_spec: RecordSpec
+    basic_spec: RecordSpec,
 ) -> None:
     with pytest.raises(InvalidFieldLength):
         basic_spec.validate_number_of_fields(5)
 
 
 def test_validate_number_of_fields_repeat_spec_no_actual_repeats(
-    repeat_spec: RecordSpec
+    repeat_spec: RecordSpec,
 ) -> None:
     """ The repeat spec is (1) + 3 * 2X """
     repeat_spec.validate_number_of_fields(4)
@@ -36,7 +36,7 @@ def test_validate_number_of_fields_repeat_spec_some_repeats(
 
 
 def test_validate_number_of_fields_repeat_spec_wrong_repeats(
-    repeat_spec: RecordSpec
+    repeat_spec: RecordSpec,
 ) -> None:
     """ The repeat spec is (1) + 3 * 2X """
     with pytest.raises(InvalidFieldLength):
