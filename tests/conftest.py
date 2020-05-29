@@ -13,6 +13,12 @@ def basic_spec():
 
 
 @fixture
+def correct_basic_line():
+    """ Matching the spec above """
+    return "1|foo|bar|bat"
+
+
+@fixture
 def repeat_spec():
     block = RepeatedBlock(key_name="stuff", fields=["d", "e"])
     return RecordSpec(

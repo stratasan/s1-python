@@ -18,7 +18,11 @@ def parse_line_with_spec(line: str, spec: RecordSpec) -> dict:
     to look like.
 
     """
-    fields = splat(line)
-    spec.validate_number_of_fields(len(fields))
+    data_fields = splat(line)
+    spec.validate_number_of_fields(len(data_fields))
+    record = {}
+    static_field_names = ["record_id"] + spec.static_fields
+    for field_name, value in zip(static_field_names, data_fields):
+        record[field_name] = value
 
-    return {}
+    return record
