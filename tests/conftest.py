@@ -20,7 +20,13 @@ def correct_basic_line():
 
 @fixture
 def repeat_spec():
-    block = RepeatedBlock(key_name="stuff", fields=["d", "e"])
+    block = RepeatedBlock(key_name="repeats", fields=["d", "e"])
     return RecordSpec(
         record_id="1", static_fields=["a", "b", "c"], repeated_block=block
     )
+
+
+@fixture
+def correct_repeat_line():
+    """ Matches repeat spec above """
+    return "1|1|2|3|4|5|6|7"

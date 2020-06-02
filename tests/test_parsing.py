@@ -21,3 +21,22 @@ def test_parsing_invalid_length_repeat_spec(bad_line, repeat_spec):
 def test_basic_parse(correct_basic_line, basic_spec):
     parsed = parse_line_with_spec(correct_basic_line, basic_spec)
     assert parsed == {"record_id": "1", "a": "foo", "b": "bar", "c": "bat"}
+
+
+def test_parse_repeat(correct_repeat_line, repeat_spec):
+    parsed = parse_line_with_spec(correct_repeat_line, repeat_spec)
+    assert parsed == {
+        "record_id": "1",
+        "a": "1",
+        "b": "2",
+        "c": "3",
+        "repeats": [{"d": "4", "e": "5"}, {"d": "6", "e": "7"}],
+    }
+
+
+def test_incorrect_record_ids(basic_spec):
+    """ Should raise when a record_id doesn't match the spec.record_id """
+    bad_line = "2|a|b|c"
+    assert basic_spec.record_id == "1"
+    with pytest.raises(ValueError):
+        parse_line_with_spec(bad_line, basic_spec)

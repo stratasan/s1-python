@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Dict, List, Optional, Union
 from dataclasses import dataclass, field
 
 from .registry import register_record_spec
@@ -13,6 +13,14 @@ class RepeatedBlock:
     key_name: str
     fields: List[str]
 
+    def __post_init__(self):
+        self.num_fields = len(self.fields)
+
+
+# Records are dictionaries, which str keys, that point to str values or in Lists of Dicts
+# with str values and str keys
+RecordType = Dict[str, Union[str, List[Dict[str, str]]]]
+
 
 @dataclass
 class RecordSpec:
@@ -23,7 +31,8 @@ class RecordSpec:
     num_repeat_fields: int = field(init=False)
 
     def __post_init__(self):
-        self.num_static_fields = len(self.static_fields)
+        # static fields are what's defined plus the spot for record_id
+        self.num_static_fields = len(self.static_fields) + 1
         self.num_repeat_fields = (
             len(self.repeated_block.fields) if self.repeated_block else 0
         )
@@ -37,8 +46,7 @@ class RecordSpec:
         * With no repeat block, n_fields is < expected
         * With no repeat block, n_fields is > expected
         * With repeat block, remaining fields don't perfectly fit """
-        # we add one to this to account for the record_id
-        size_repeated_fields = n_fields - (self.num_static_fields + 1)
+        size_repeated_fields = n_fields - (self.num_static_fields)
         # The number of repeated fields could be less than zero, that's bad
         if size_repeated_fields < 0:
             raise InvalidFieldLength(

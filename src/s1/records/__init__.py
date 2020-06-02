@@ -1,1 +1,1 @@
-from .base import RecordSpec
+from .base import RecordSpec, RecordType, RepeatedBlock
