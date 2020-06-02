@@ -23,9 +23,16 @@ def grouper(iterable, n, fillvalue=None):
 def build_repeated_objects(
     repeated_fields: Iterator[str], block: RepeatedBlock
 ) -> List[Dict[str, str]]:
+    """ Build a list of dicts with fields given by the RepeatedBlock
+
+    S1 lines can contain a variable number of fields. If a particular spec
+    contains a RepeatedBlock, then that block is assumed to repeat after the
+    static fields of the RecordSpec. This function groups these fields
+    (of unknown length) into a chunk equal to the number of fields in the repeated block
+    and converts them into a dictionary, accumulating those dictionaries """
     repeated_objects = []
     # grouper cuts the incoming iterator of strings into a chunk based
-    # on the number of fields in the repeated block
+    # on the number of fields in the repeated blockg
     for grouped in grouper(repeated_fields, block.num_fields):
         # the dict function can take 2-tuples, using the first item as the key and second
         # as value, which zip-with-two-arguments perfectly fulfills
@@ -40,16 +47,13 @@ def parse_line_with_spec(line: str, spec: RecordSpec) -> RecordType:
     The basic idea of the S1 format is that it contains pipe-separated lines containing
     fields. The first field, a record id, encodes what we expect the rest of the line
     to look like.
-
     """
     data_fields = splat(line)
     spec.validate_number_of_fields(len(data_fields))
     if data_fields[0] != spec.record_id:
         raise ValueError()
     record: RecordType = {}
-    static_field_names = ["record_id"] + spec.static_fields
-    for field_name, value in zip(static_field_names, data_fields):
-        record[field_name] = value
+    record.update(dict(zip(spec.all_static_field_names, data_fields)))
     if spec.repeated_block:
         # Take the rest of the repeated fields, which we know cleanly
         # fall into the number of fields in the repeated block

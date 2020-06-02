@@ -1,4 +1,4 @@
-__version__ = "0.0.0"
+__version__ = "0.0.1"
 
 __title__ = "s1"
 __description__ = "S1 in Python"

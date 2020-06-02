@@ -36,6 +36,7 @@ class RecordSpec:
         self.num_repeat_fields = (
             len(self.repeated_block.fields) if self.repeated_block else 0
         )
+        self.all_static_field_names = ["record_id"] + self.static_fields
         register_record_spec(self)
 
     def validate_number_of_fields(self, n_fields: int) -> None:
