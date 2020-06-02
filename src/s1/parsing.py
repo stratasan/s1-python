@@ -14,7 +14,7 @@ def splat(line: str) -> List[str]:
 def grouper(iterable, n, fillvalue=None):
     """Collect data into fixed-length chunks or blocks
 
-    https://docs.python.org/3.8/library/itertools.html
+    See recipes at https://docs.python.org/3.8/library/itertools.html
     """
     args = [iter(iterable)] * n
     return zip_longest(*args, fillvalue=fillvalue)
@@ -24,10 +24,12 @@ def build_repeated_objects(
     repeated_fields: Iterator[str], block: RepeatedBlock
 ) -> List[Dict[str, str]]:
     repeated_objects = []
+    # grouper cuts the incoming iterator of strings into a chunk based
+    # on the number of fields in the repeated block
     for grouped in grouper(repeated_fields, block.num_fields):
-        new_object: Dict[str, str] = dict(
-            (field, value) for field, value in zip(block.fields, grouped)
-        )
+        # the dict function can take 2-tuples, using the first item as the key and second
+        # as value, which zip-with-two-arguments perfectly fulfills
+        new_object: Dict[str, str] = dict(zip(block.fields, grouped))
         repeated_objects.append(new_object)
     return repeated_objects
 

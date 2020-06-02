@@ -1,7 +1,7 @@
 import pytest
 
-from s1.parsing import parse_line_with_spec
-from s1.records.base import InvalidFieldLength
+from s1.parsing import parse_line_with_spec, build_repeated_objects
+from s1.records.base import InvalidFieldLength, RepeatedBlock
 
 
 @pytest.mark.parametrize("bad_line", ["1|foo", "1|foo|bar|bat|zoo"])
@@ -40,3 +40,21 @@ def test_incorrect_record_ids(basic_spec):
     assert basic_spec.record_id == "1"
     with pytest.raises(ValueError):
         parse_line_with_spec(bad_line, basic_spec)
+
+
+def test_build_repeated_objects_basic():
+    iterator = ["1", "2", "3", "4"]
+    # define a RepeatedBlock of two fields
+    block = RepeatedBlock(key_name="something", fields=["a", "b"])
+    repeated_objects = build_repeated_objects(iterator, block)
+    assert len(repeated_objects) == 2
+    assert repeated_objects[0] == {"a": "1", "b": "2"}
+    assert repeated_objects[1] == {"a": "3", "b": "4"}
+
+
+def test_build_repeated_objects_empty_data():
+    iterator = []
+    # define a RepeatedBlock of two fields
+    block = RepeatedBlock(key_name="something", fields=["a", "b"])
+    repeated_objects = build_repeated_objects(iterator, block)
+    assert len(repeated_objects) == 0
