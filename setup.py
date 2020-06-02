@@ -30,7 +30,12 @@ CLASSIFIERS = [
 ]
 PYTHON_REQUIRES = ">=3.6"
 INSTALL_REQUIRES = ["dataclasses;python_version<'3.7'"]
-TESTS_REQUIRE = ["pytest>=3.3.0", "black==19.10b0"]
+TESTS_REQUIRE = [
+    "pytest>=3.3.0",
+    "black==19.10b0",
+    "mypy>=0.770,<1.0",
+    "coverage",
+]
 DOCS_REQUIRE = ["mkdocs"]
 EXTRAS_REQUIRE = {
     "dev": TESTS_REQUIRE + DOCS_REQUIRE,
