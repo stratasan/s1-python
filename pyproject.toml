@@ -4,3 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [tool.black]
 line-length = 80
+
+[tool.coverage.run]
+parallel = true
+branch = true
+source = ["s1"]
+
+[tool.coverage.report]
+show_missing = true
