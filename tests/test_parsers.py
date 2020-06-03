@@ -8,6 +8,8 @@ def test_parser_normal_feed_flush(parser, good_lines, parser_specs):
     parser.finish()
     assert parser.buffer_size == 1
     flushed = parser.flush()
+    assert parser.current_encounter.is_empty == True
+    assert parser.buffer_size == 0
     assert len(flushed) == 1
     encounter = flushed[0]
     assert len(encounter.records) == 2

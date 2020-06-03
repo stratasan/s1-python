@@ -1,11 +1,9 @@
 from typing import Dict, List, Optional, Union
 from dataclasses import dataclass, field
 
+from s1.exceptions import InvalidFieldLength
+
 from .registry import register_record_spec
-
-
-class InvalidFieldLength(ValueError):
-    pass
 
 
 @dataclass
