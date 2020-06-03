@@ -1,0 +1,2 @@
+class UnknownRecordType(ValueError):
+    pass

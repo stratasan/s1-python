@@ -2,6 +2,8 @@ from itertools import islice, zip_longest
 from typing import Dict, Iterator, List, Union
 
 from s1.records import RecordSpec, RepeatedBlock, RecordType
+from s1.records.registry import spec_from_record_id
+from s1.exceptions import UnknownRecordType
 
 SEP = "|"
 
@@ -63,3 +65,9 @@ def parse_line_with_spec(line: str, spec: RecordSpec) -> RecordType:
         )
 
     return record
+
+
+def record_id_from_line(line: str) -> str:
+    if SEP not in line:
+        raise ValueError(f"An S1 line must contain at least one {SEP}")
+    return line.split(SEP, maxsplit=1)[0]

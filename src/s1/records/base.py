@@ -26,6 +26,7 @@ RecordType = Dict[str, Union[str, List[Dict[str, str]]]]
 class RecordSpec:
     record_id: str
     static_fields: List[str]
+    denotes_new_set: bool = False
     repeated_block: Optional[RepeatedBlock] = None
     num_static_fields: int = field(init=False)
     num_repeat_fields: int = field(init=False)
@@ -68,3 +69,23 @@ class RecordSpec:
             )
 
         return
+
+
+@dataclass
+class Encounter:
+    """ Encounters capture a contiguous set of records """
+
+    records: List[RecordType] = field(default_factory=list)
+
+    @property
+    def is_empty(self):
+        return len(self.records) == 0
+
+    def add_record(self, record: RecordType) -> None:
+        self.records.append(record)
+
+    def as_dict(self) -> Dict[str, RecordType]:
+        serialized = {}
+        for record in self.records:
+            serialized[record["record_id"]] = record
+        return serialized
