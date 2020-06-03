@@ -87,5 +87,11 @@ class Encounter:
     def as_dict(self) -> Dict[str, RecordType]:
         serialized = {}
         for record in self.records:
-            serialized[record["record_id"]] = record
+            # Unfortunately we have to appease the mypy gods here
+            # (or better type our Records, which gets real hard real fast)
+            # the isinstance tells mypy that the value from `record_id` must
+            # be a str to get into that block
+            record_id = record["record_id"]
+            if isinstance(record_id, str):
+                serialized[record_id] = record
         return serialized
