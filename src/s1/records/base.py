@@ -3,8 +3,6 @@ from dataclasses import dataclass, field
 
 from s1.exceptions import InvalidFieldLength
 
-from .registry import register_record_spec
-
 
 @dataclass
 class RepeatedBlock:
@@ -36,7 +34,6 @@ class RecordSpec:
             len(self.repeated_block.fields) if self.repeated_block else 0
         )
         self.all_static_field_names = ["record_id"] + self.static_fields
-        register_record_spec(self)
 
     def validate_number_of_fields(self, n_fields: int) -> None:
         """ The number of fields expected in a line is the length of static
