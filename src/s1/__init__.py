@@ -9,3 +9,5 @@ __email__ = "dev@stratasan.com"
 
 __license__ = "MIT License"
 __copyright__ = "Copyright (c) 2020 " + __author__
+
+from s1 import specifications

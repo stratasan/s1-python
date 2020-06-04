@@ -175,6 +175,7 @@ OccurrencesAndValues800 = RecordSpec(
         "condition_code_10",
         "condition_code_11",
         "condition_code_12",
+        "occurrence_code_1",
         "occurrence_code_date_1",
         "occurrence_code_2",
         "occurrence_code_date_2",
