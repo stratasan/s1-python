@@ -15,6 +15,8 @@ class S1Parser:
         self.buffer: List[RecordSet] = []
         self.current_encounter: RecordSet = RecordSet()
         self._buffer_size: int = 0
+        self._total_lines: int = 0
+        self._total_sets: int = 0
 
     @property
     def buffer_size(self) -> int:
@@ -24,6 +26,22 @@ class S1Parser:
     def buffer_size(self, size: int) -> None:
         self._buffer_size = size
 
+    @property
+    def total_lines(self):
+        return self._total_lines
+
+    @total_lines.setter
+    def total_lines(self, total: int) -> None:
+        self._total_lines = total
+
+    @property
+    def total_sets(self) -> int:
+        return self._total_sets
+
+    @total_sets.setter
+    def total_sets(self, total: int) -> None:
+        self._total_sets = total
+
     def handle_new_line(self, line: str) -> Tuple[RecordSpec, RecordType]:
         record_id = record_id_from_line(line)
         try:
@@ -31,6 +49,7 @@ class S1Parser:
         except KeyError:
             raise UnknownRecordType()
         record = parse_line_with_spec(line, spec)
+        self.total_lines += 1
         return spec, record
 
     def finish_current_encounter(self) -> None:
@@ -40,6 +59,7 @@ class S1Parser:
 
         self.buffer.append(self.current_encounter)
         self.buffer_size += 1
+        self.total_sets += 1
         self.current_encounter = RecordSet()
 
     def attach_record(self, record: RecordType) -> None:

@@ -1,18 +1,30 @@
 import pytest
 
 
-def test_parser_normal_feed_flush(parser, good_lines, parser_specs):
+def test_parser_feed_flush_returns_approprate_sets(
+    parser, good_lines, parser_specs
+):
     for line in good_lines:
         parser.feed(line)
 
     parser.finish()
-    assert parser.buffer_size == 1
     flushed = parser.flush()
     assert parser.current_encounter.is_empty == True
-    assert parser.buffer_size == 0
     assert len(flushed) == 1
-    encounter = flushed[0]
-    assert len(encounter.records) == 2
+    record_set = flushed[0]
+    assert len(record_set.records) == 2
+
+
+def test_parser_stats(parser, good_lines, parser_specs):
+    for line in good_lines:
+        parser.feed(line)
+
+    parser.finish()
+    assert parser.total_lines == 2
+    assert parser.total_sets == 1
+    assert parser.buffer_size == 1
+    flushed = parser.flush()
+    assert parser.buffer_size == 0
 
 
 def test_parser_raises_batch_size_exceeded(parser, good_lines, parser_specs):
