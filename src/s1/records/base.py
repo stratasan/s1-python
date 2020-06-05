@@ -67,7 +67,7 @@ class RecordSpec:
 
 
 @dataclass
-class Encounter:
+class RecordSet:
     """ Encounters capture a contiguous set of records """
 
     records: List[RecordType] = field(default_factory=list)

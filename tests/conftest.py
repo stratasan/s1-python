@@ -2,7 +2,7 @@ from typing import List
 
 from dataclasses import dataclass, field
 
-from s1.parsers import S1Parser
+from s1 import S1Parser
 from s1.records import RecordSpec, RepeatedBlock, register_record_spec
 
 from pytest import fixture
@@ -74,6 +74,7 @@ def tha_lines():
 
 @fixture
 def tha_encounter():
+    """ This fixture is derived from the above lines """
     return {
         "100": {
             "record_id": "100",

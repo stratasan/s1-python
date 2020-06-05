@@ -2,7 +2,7 @@ from typing import List, Tuple
 
 from s1.exceptions import UnknownRecordType
 from s1.parsing import parse_line_with_spec, record_id_from_line
-from s1.records import Encounter, RecordSpec, RecordType
+from s1.records import RecordSet, RecordSpec, RecordType
 from s1.records.registry import spec_from_record_id
 
 
@@ -12,8 +12,8 @@ class S1Parser:
 
     def __init__(self, batch_size=1000):
         self.batch_size = batch_size
-        self.buffer: List[Encounter] = []
-        self.current_encounter: Encounter = Encounter()
+        self.buffer: List[RecordSet] = []
+        self.current_encounter: RecordSet = RecordSet()
         self._buffer_size: int = 0
 
     @property
@@ -40,7 +40,7 @@ class S1Parser:
 
         self.buffer.append(self.current_encounter)
         self.buffer_size += 1
-        self.current_encounter = Encounter()
+        self.current_encounter = RecordSet()
 
     def attach_record(self, record: RecordType) -> None:
         self.current_encounter.add_record(record)
@@ -59,7 +59,7 @@ class S1Parser:
     def finish(self) -> None:
         self.finish_current_encounter()
 
-    def flush(self) -> List[Encounter]:
+    def flush(self) -> List[RecordSet]:
         flushed = self.buffer.copy()
         self.buffer.clear()
         self.buffer_size = 0
