@@ -43,7 +43,6 @@ Feed this parser data line-by-line. During this process, the parser translates l
 
 ```python
 from s1 import S1Parser
-from s1.exceptions import BatchSizeExceeded
 from s1.classes import Encounter
 
 parser = S1Parser(batch_size=1000)
@@ -56,7 +55,7 @@ def serialize(records):
 for line in data:
     try:
         parser.feed(line)
-    except BatchSizeExceeded:
+    except parser.BatchSizeExceeded:
         records: List[Encounter] = parser.flush()
         # serialize and do something w/ results
         serialize(records)

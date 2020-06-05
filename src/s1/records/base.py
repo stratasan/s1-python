@@ -1,11 +1,7 @@
 from typing import Dict, List, Optional, Union
 from dataclasses import dataclass, field
 
-from .registry import register_record_spec
-
-
-class InvalidFieldLength(ValueError):
-    pass
+from s1.exceptions import InvalidFieldLength
 
 
 @dataclass
@@ -26,6 +22,7 @@ RecordType = Dict[str, Union[str, List[Dict[str, str]]]]
 class RecordSpec:
     record_id: str
     static_fields: List[str]
+    denotes_new_set: bool = False
     repeated_block: Optional[RepeatedBlock] = None
     num_static_fields: int = field(init=False)
     num_repeat_fields: int = field(init=False)
@@ -37,7 +34,6 @@ class RecordSpec:
             len(self.repeated_block.fields) if self.repeated_block else 0
         )
         self.all_static_field_names = ["record_id"] + self.static_fields
-        register_record_spec(self)
 
     def validate_number_of_fields(self, n_fields: int) -> None:
         """ The number of fields expected in a line is the length of static
@@ -68,3 +64,29 @@ class RecordSpec:
             )
 
         return
+
+
+@dataclass
+class RecordSet:
+    """ Encounters capture a contiguous set of records """
+
+    records: List[RecordType] = field(default_factory=list)
+
+    @property
+    def is_empty(self):
+        return len(self.records) == 0
+
+    def add_record(self, record: RecordType) -> None:
+        self.records.append(record)
+
+    def as_dict(self) -> Dict[str, RecordType]:
+        serialized = {}
+        for record in self.records:
+            # Unfortunately we have to appease the mypy gods here
+            # (or better type our Records, which gets real hard real fast)
+            # the isinstance tells mypy that the value from `record_id` must
+            # be a str to get into that block
+            record_id = record["record_id"]
+            if isinstance(record_id, str):
+                serialized[record_id] = record
+        return serialized

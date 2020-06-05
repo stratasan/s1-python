@@ -26,7 +26,7 @@ def test_basic_parse(correct_basic_line, basic_spec):
 def test_parse_repeat(correct_repeat_line, repeat_spec):
     parsed = parse_line_with_spec(correct_repeat_line, repeat_spec)
     assert parsed == {
-        "record_id": "1",
+        "record_id": "2",
         "a": "1",
         "b": "2",
         "c": "3",
@@ -36,7 +36,7 @@ def test_parse_repeat(correct_repeat_line, repeat_spec):
 
 def test_incorrect_record_ids(basic_spec):
     """ Should raise when a record_id doesn't match the spec.record_id """
-    bad_line = "2|a|b|c"
+    bad_line = "abcd|a|b|c"
     assert basic_spec.record_id == "1"
     with pytest.raises(ValueError):
         parse_line_with_spec(bad_line, basic_spec)
