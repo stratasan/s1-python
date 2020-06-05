@@ -2,7 +2,7 @@ from typing import List
 
 from dataclasses import dataclass, field
 
-from s1 import S1Parser
+from s1 import S1Parser, S1Validator
 from s1.records import RecordSpec, RepeatedBlock, register_record_spec
 
 from pytest import fixture
@@ -421,3 +421,8 @@ def tha_encounter():
             "value_code_amount_24": "1",
         },
     }
+
+
+@fixture
+def validator():
+    return S1Validator()

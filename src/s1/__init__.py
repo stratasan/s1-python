@@ -10,5 +10,6 @@ __email__ = "dev@stratasan.com"
 __license__ = "MIT License"
 __copyright__ = "Copyright (c) 2020 " + __author__
 
-from s1.parsers import S1Parser
 from s1 import specifications
+from s1.parsers import S1Parser
+from s1.validators import S1Validator

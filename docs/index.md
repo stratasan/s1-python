@@ -12,13 +12,16 @@ encodes data following rather generic rules:
 
 The purpose of the S1 is to encode complex data relationships with a minimum
 amount of pomp and circumstance. The S1 doesn't imply field formats or lengths,
-as that should be left to downstream processes.
+as that should be left to downstream processes. The major use case is to encode
+entities with various 1:M relationships beneath them.
+
+The S1 does not handle M:M or deeply-nested relationships. Consider using other formats as necessary for your work.
 
 This package ships with parsers and validators to transform data encoded in the
 S1 format into more structured data. This package structures the data based on
-RecordSpecs, short for Record Specification. This package includes our own
+RecordSpecs, short for Record Specification. We have included our own
 "first-party" record specifications, but there are hooks to register other
-"RecordSpecs".
+RecordSpecs.
 
 ## Record Specifications
 
@@ -31,7 +34,7 @@ A Record Specification consists of:
 * a boolean denoting whether it implies the beginning of a new entity
 
 For example, let's take an example where we want to capture information about a
-person and how many books they own.
+person and the books they own.
 
 We'll say we want to capture the first and last name of the person along with a
 book title, author and whether they've read it or not.
@@ -48,14 +51,14 @@ A "book" record is a bit more complex, due to the 1:M relationship implied
 between a person and their books. Since we want to capture the name, author, and
 whether it's been read by the owner for each book, that's our repeated block.
 
-So a valid line could look like:
+So a valid book line could look like:
 
 ```
 2|BookName|BookAuthor|0|Book2Name|Book2Author|1
 ```
 
 The first field, `2` is the record id we'll use for "Book" entities. There are
-two books encoded in this line, though there could be quite a few. The 0 or 1
+two books encoded in this line, though the format defines no limit. The 0 or 1
 is simply a boolean placeholder, the S1 format does not imply anything about
 interpretation of encoded data.
 
@@ -122,7 +125,7 @@ for line in data_lines:  # bring your own data
 # finish and flush
 parser.finish()
 records = parser.flush()
-# again, serialize records and do something with them
+# again, do something with the data: serialize to a file, write to DB, etc
 ```
 
 Assuming that all `RecordSpec` instances have been defined and
