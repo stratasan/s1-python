@@ -3,7 +3,7 @@ import pytest
 from s1.exceptions import InvalidS1Format, UnknownRecordType, InvalidS1Line
 
 
-def test_validator_throws_invalid(validator):
+def test_validator_throws_invalid_format(validator):
     not_an_s1_line = "some,other,separator"
 
     with pytest.raises(InvalidS1Format):
@@ -17,7 +17,7 @@ def test_validator_throws_unknown(validator):
         validator.validate(unknown_line)
 
 
-def test_validator_throws_invalid(validator):
+def test_validator_throws_invalid_line(validator):
     """ We already have 1-records defined as having three fields """
     invalid_line = "1|a|b|c|d"  # because longer fields
 
